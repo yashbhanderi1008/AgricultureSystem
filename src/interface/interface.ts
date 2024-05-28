@@ -1,8 +1,8 @@
-import { Types } from "mongoose";
+import { Types, Document } from "mongoose";
 import { Request } from "express";
 import { GeoJSON } from "geojson";
 
-export interface FarmerInterface {
+export interface FarmerInterface extends Document{
     _id?: Types.ObjectId
     name: string
     email: string
@@ -12,7 +12,7 @@ export interface FarmerInterface {
     role: string
 }
 
-export interface FarmInterface {
+export interface FarmInterface  extends Document{
     id: Types.ObjectId
     name: string
     location: GeoJSON
@@ -20,7 +20,7 @@ export interface FarmInterface {
     farmerId: Types.ObjectId
 }
 
-export interface CropInterface{
+export interface CropInterface extends Document{
     id: Types.ObjectId
     name: string
     type: string
@@ -29,7 +29,7 @@ export interface CropInterface{
     farmId: Types.ObjectId
 }
 
-export interface WeatherDataInterface{
+export interface WeatherDataInterface extends Document{
     id: Types.ObjectId
     farmId: Types.ObjectId
     date: Date
@@ -39,7 +39,7 @@ export interface WeatherDataInterface{
     windSpeed: number
 }
 
-export interface HarvestReportInterface{
+export interface HarvestReportInterface extends Document{
     id: Types.ObjectId
     cropId: Types.ObjectId
     harvestDate: Date
@@ -48,7 +48,7 @@ export interface HarvestReportInterface{
     notes: string
 }
 
-export interface IrrigationScheduleInterface{
+export interface IrrigationScheduleInterface extends Document{
     id: Types.ObjectId
     cropId: Types.ObjectId
     startTime: Date
@@ -57,7 +57,7 @@ export interface IrrigationScheduleInterface{
     frequency: string
 }
 
-export interface SoilTestInterface{
+export interface SoilTestInterface extends Document{
     id: Types.ObjectId
     cropId: Types.ObjectId
     testDate: Date

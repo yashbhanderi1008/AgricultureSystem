@@ -14,15 +14,16 @@ const farmSchema = new mongoose.Schema<FarmInterface>({
         },
         coordinates: {
             type: [Number],
-            required: true
-        }
+            required: true,
+            unique: true
+        },
     },
     size: {
         type: Number,
         required: true
     },
     farmerId: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Farmer',
         required: true
     }
