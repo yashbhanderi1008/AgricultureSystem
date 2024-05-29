@@ -20,7 +20,7 @@ const cropSchema = new mongoose.Schema<CropInterface>({
         required: true
     },
     farmId: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Farm',
         required: true
     }

@@ -3,6 +3,8 @@ import { FarmerService } from "../service/farmerService";
 import { CustomRequest } from "../interface/interface";
 import { Types } from "mongoose";
 
+
+
 export class FarmerController {
     static async newFarmer(req: Request, res: Response): Promise<void> {
         try {
@@ -31,7 +33,7 @@ export class FarmerController {
     static async updateFarmer(req: Request, res: Response): Promise<void> {
         try {
             const farmer = req.body;
-            const farmerId = new Types.ObjectId((req as CustomRequest).user._id);
+            const farmerId = new Types.ObjectId((req as CustomRequest).user?._id);
 
             await FarmerService.updateFarmer(farmer, farmerId);
 
@@ -43,7 +45,7 @@ export class FarmerController {
 
     static async deleteFarmer(req: Request, res: Response): Promise<void> {
         try {
-            const farmerId = new Types.ObjectId((req as CustomRequest).user._id);
+            const farmerId = new Types.ObjectId((req as CustomRequest).user?._id);
 
             await FarmerService.deleteFarmer(farmerId);
 

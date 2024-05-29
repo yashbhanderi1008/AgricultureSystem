@@ -1,6 +1,7 @@
 import { Types } from "mongoose";
 import { FarmInterface, FarmerInterface } from "../interface/interface";
 import Farm from "../model/farmModel";
+import jwt from "jsonwebtoken";
 
 export class FarmService {
     static async newFarm(farm: FarmInterface, farmerId: Types.ObjectId): Promise<void> {
@@ -35,5 +36,23 @@ export class FarmService {
                 await farm.deleteOne();
             }
         }
+    }
+
+    static async allFarmsOfFarmer(farmerId: Types.ObjectId): Promise<string[]> {
+        const farms = await Farm.find({ farmerId: farmerId });
+
+        return farms.map(farm => farm.name)
+    }
+
+    static async accessFarm(farmId: Types.ObjectId, farmerId: Types.ObjectId): Promise<{ farmName: string, token: string }> {
+        const farm: FarmInterface | null = await Farm.findOne({ _id: farmId, farmerId: farmerId });
+
+        if (!farm) {
+            throw new Error("Farm not found");
+        }
+
+        const token = jwt.sign({ farmId: farm._id, farmerId: farm.farmerId }, `${process.env.SECRET_KEY}`, { algorithm: 'HS256' });
+
+        return { farmName: farm.name, token: token }
     }
 }

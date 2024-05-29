@@ -7,7 +7,7 @@ export class FarmController {
     static async newFarm(req: Request, res: Response): Promise<void> {
         try {
             const farm = req.body;
-            const farmerId = new Types.ObjectId((req as CustomRequest).user._id);
+            const farmerId = new Types.ObjectId((req as CustomRequest).user?._id);
 
             await FarmService.newFarm(farm, farmerId);
 
@@ -43,6 +43,36 @@ export class FarmController {
             }
 
             res.status(204).json({ message: "Farm deleted successfully" });
+        } catch (error: any) {
+            res.status(404).json({ message: error.message });
+        }
+    }
+
+    static async farmList(req: Request, res: Response): Promise<void> {
+        try {
+            const farmerId = (req as CustomRequest).user?._id;
+
+            if (farmerId) {
+                const farms = await FarmService.allFarmsOfFarmer(farmerId);
+
+                res.status(200).json({ data: farms })
+            }
+        } catch (error: any) {
+            res.status(404).json({ message: error.message });
+        }
+    }
+
+    static async accessFarm(req: Request, res: Response): Promise<void> {
+        try {
+            const farmerId = (req as CustomRequest).user?._id;
+            const farmId = new Types.ObjectId(req.params.farmId);
+
+            if (farmerId && farmId) {
+                const farm = await FarmService.accessFarm(farmId, farmerId);
+
+                res.status(200).json({ data: farm.token, message: `You can acces now your Farm ${farm.farmName}` });
+            }
+
         } catch (error: any) {
             res.status(404).json({ message: error.message });
         }
